@@ -32,10 +32,10 @@
   }
 
   body {
-    margin: 0;
+    margin: 0 ;
     font-family: 'Montserrat', sans-serif;
     line-height: 1.6;
-    background-image: url(../img/mars.jpg);
+    background-image: url(../img/mars.jpg); 
     background-size: cover;
     color: var(--clr-light);
     min-height: 100vh;
@@ -85,14 +85,20 @@ a{
 
 
 .mars-current-weather {
-    background: rgba(0,0,0,.7);
+
+
+    justify-content: center !important;
+    margin:auto !important;
+    margin-top: 10% !important;
+
+
+    
+    padding:2em;
+       background: rgba(0,0,0,.7);
     padding: 6em 2em 2em;
     max-width: 1000px;
-    margin: 1em;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-     /*this is only accepted on firefox */
-    grid-gap:2em ;
+    margin:auto;
+
 }
 
     .date{
@@ -111,25 +117,21 @@ a{
     .temp {
         /*creating the division lines --border is just local */
                 --border: solid .25em var(--clr-accent-dark);    
-        grid-column: 2 / 3;
-        border-left: var(--border);
-        border-right: var(--border);
-         /* same as grid gap*/
-        padding: 0 2em;
+  
     }
 
     .wind {
-     grid-column: 3 / 4;
-     display: grid;
     
-     grid-template-columns: repeat(2, 1fr);
+     display: grid;
+     column-gap: 1em;    
+     grid-template-columns: min-content 1fr;
      /* this is making it not as strached out to match the first column but to fit the on that its in */
      grid-template-rows: min-content 1fr;
      align-self: start;
 
      .section-title,
      .reading{
-         grid-column: 2 / 3;
+         grid-column: 1 / 2;
      }
 
 
@@ -141,7 +143,7 @@ a{
         background-color: rgba(255,255,255,.5);
         display: grid;
         place-items: center;
-        
+        grid-column: 2/3;
         grid-row: 1 / span 2;
      }
 
@@ -164,12 +166,21 @@ a{
 }
 
 
-.info{
-    grid-column: 1/3;
-}
+
 
 .unit{
-    grid-column: 3/4;
+    //making it so this is only part of mobile and some tablets
+    @media(max-width: 900px){
+    //setting it to top left
+    position: absolute;
+    left: 3em;
+    top:3em;
+    
+    }
+
+
+
+    
     /*adding to bottom corner*/
     place-self: end;
     color: var(--clr-light);
@@ -239,22 +250,29 @@ a{
 }
 
 .previous-weather {
-   
+
+  
+
+  @media(max-width: 600px){ display: none;} 
     background: var(--clr-light);
     color: var(--clr-dark);
-    position: absolute;
-    bottom: 0;
+   position: fixed;
+    bottom: 0;   
     width: 100%;   
     transform: translateY(60%);
     transition: transform 350ms ease;
+    padding:3rem;
+    
 }
 
-.show-previous-weather-label{
+.show-previous-weather{
+    
+
     position: absolute;
     background:var(--clr-light);
     left:50%;
     width:10rem;
-    transform:translate(-50%, -100%);
+    transform:translate(-50%, calc(-100% - 3rem));
     text-align: center;
     font-size: var(--fs-h2);
     line-height: 1;
@@ -262,13 +280,193 @@ a{
     cursor: pointer;
     color: var(--clr-gray);
     border:0;
+    font-family: inherit;
+
+          
+
+    &:hover,
+    &:focus{
+        color:var(--clr-dark);
+    }
+    
+    
+    span {
+        display: block;
+        transform: rotate(0);
+        transition: transform 300ms ease;
+    } 
 }
 .previous-days {
+
     display: flex;
+    justify-content: space-between;
+
   
 }
-.show-weather  {
-    transform: translateY(0);
+.previous-weather__title{
+    text-align: center;
 }
+
+
+.previous-day{
+    opacity: 0;
+
+/*allowing for a more align margin */
+    & > * {margin:0}
+
+    &__date {
+        font-size: .9rem;
+        color: var(--clr-gray);
+    }
+
+    &__more-info{
+        cursor: pointer;
+        border:0;        
+        border-radius: 100vmax;
+        background: var(--clr-dark) ;
+        color: var(--clr-light);
+        text-transform: uppercase;
+        padding: .5em 1em;
+        margin-top: 1em;
+
+
+        &:hover {
+            background:var(--clr-gray);
+        }
+    }
+    
+}
+
+
+.show-weather.previous-weather {
+    transform: translateY(0);
+
+
+        /*not sure why span isnt working 14:30 vid 4 */       
+    .show-previous-weather span {
+        display: block;
+        transform: rotate(180deg) translateY(-6px);
+    } 
+    .previous-weather__title, .previous-day{
+        animation:  slideUpIn 750ms forwards;
+    }
+    .previous-weather__title{
+        text-align: left;
+    }
+
+
+  
+
+     /* Adding the animation to make each day come up one buy one */
+    .previous-day:nth-child(1) {animation-delay: 100ms ;}
+    .previous-day:nth-child(2) {animation-delay: 125ms ;}
+    .previous-day:nth-child(3) {animation-delay: 150ms ;}
+    .previous-day:nth-child(4) {animation-delay: 175ms ;}
+    .previous-day:nth-child(5) {animation-delay: 200ms ;}
+    .previous-day:nth-child(6) {animation-delay: 225ms ;}
+    .previous-day:nth-child(7) {animation-delay: 275ms ;}
+
+      }
+@keyframes slideUpIn{
+    0% {
+        opacity: 1;
+        transform:translateY(50%);
+        }
+
+        100% {
+            opacity: 1;
+            transform:translateY(0);
+            }
+}
+
+
+
+
+  //tablet sizing 
+     @media(min-width: 600px){
+         .mars-current-weather{
+              display: grid;
+              row-gap: 2em;
+              //changing 3 colums to 2
+             grid-template-columns: repeat(2);            
+         }
+
+         .date{
+             grid-column: 1/-1;
+         }
+          .temp{
+             grid-column: 1/2;
+             padding:0;
+             }
+
+         .wind{
+           
+             grid-column: 2/3;
+         }
+    .previous-weather{
+        position: fixed; 
+        height:30%;
+
+           
+
+    }
+       
+             }
+
+   //now setting it to mobie friendly 
+     @media(min-width: 900px){
+         :root{
+            --fs-h1: 1.25rem;
+            --fs-h2: 1.75rem;
+            --fs-body: 1rem;
+            --fs-xl: 4rem;
+         }
+
+
+         body{
+             height: 100vh;
+            overflow:hidden;
+                 }
+
+                 .date{
+                     grid-column: 1/2;
+                 }
+
+                 .mars-current-weather{
+                     padding:2em;
+                     margin: 4em 4em 0 4em;
+                    margin: 1em;
+                   grid-template-columns: repeat(3, 1fr);
+                     /*this is only accepted on firefox */
+                    grid-gap:2em ;
+                 }
+                 .temp{
+                    grid-column: 2 / 3;
+                    border-left: var(--border);
+                    border-right: var(--border);
+                    padding: 2em 0;        
+                 }
+
+                 .wind{
+                    grid-column: 3 / 4;
+                   .section-title,
+                 .reading{
+                     grid-column: 2 / 3;
+                 }
+
+                 &__direction {
+                    --size: 6rem;
+                   grid-column: 1/2;
+                    grid-row: 1 / span 2;
+                 }
+                        }
+
+         .info {
+             grid-column: 1/3;
+         }               
+
+
+     }
+
 
 
